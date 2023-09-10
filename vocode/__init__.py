@@ -1,5 +1,5 @@
 import os
-
+import baserun
 
 environment = {}
 
@@ -15,3 +15,5 @@ def getenv(key, default=None):
 
 api_key = getenv("VOCODE_API_KEY")
 base_url = getenv("VOCODE_BASE_URL", "api.vocode.dev")
+
+baserun.init()

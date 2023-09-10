@@ -275,6 +275,21 @@ files = [
 ]
 
 [[package]]
+name = "baserun"
+version = "0.5.5"
+description = "Tools for testing, debugging, and evaluating LLM features."
+optional = false
+python-versions = ">=3.7.1"
+files = [
+    {file = "baserun-0.5.5-py3-none-any.whl", hash = "sha256:595cedf1041d4d2155b55d28b86b7a1ee8a345dbab4d6c00536111019df7a1fa"},
+    {file = "baserun-0.5.5.tar.gz", hash = "sha256:1b9c81a85839e3ff2180347d0b2bfb00bcb5a3cc47992e82934306538ea9b0e3"},
+]
+
+[package.dependencies]
+openai = ">=0.27.2"
+requests = ">=2.31.0"
+
+[[package]]
 name = "black"
 version = "23.7.0"
 description = "The uncompromising code formatter."
@@ -3677,4 +3692,4 @@ transcribers = ["google-cloud-speech"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<3.12"
-content-hash = "60ee4d2395b06922d238968909c009a25d709310e7eee66ddc4f5fb16463e74e"
+content-hash = "49c7ba780df22fa2a58c9fd0113f23bddf7ba38bce8cc8973e95925dc735d49e"
