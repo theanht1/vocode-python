@@ -101,14 +101,14 @@ class TelephonyServer:
 
         self.router.add_api_route("/recordings/{conversation_id}", self.recordings, methods=["GET", "POST"])
         self.logger.info(f"Set up recordings endpoint at https://{self.base_url}/recordings/{{conversation_id}}")
- 
+
     def events(self, request: Request):
         return Response()
 
     async def recordings(self, request: Request, conversation_id: str):
         recording_url = (await request.json())["recording_url"]
         if self.events_manager is not None and recording_url is not None:
-            self.events_manager.publish_event(RecordingEvent(recording_url=recording_url, conversation_id=conversation_id))
+            await self.events_manager.handle_event(RecordingEvent(recording_url=recording_url, conversation_id=conversation_id))
         return Response()
 
     def create_inbound_route(
