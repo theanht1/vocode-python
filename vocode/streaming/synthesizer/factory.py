@@ -23,6 +23,7 @@ from vocode.streaming.synthesizer.gtts_synthesizer import GTTSSynthesizer
 from vocode.streaming.synthesizer.play_ht_synthesizer import PlayHtSynthesizer
 from vocode.streaming.synthesizer.rime_synthesizer import RimeSynthesizer
 from vocode.streaming.synthesizer.polly_synthesizer import PollySynthesizer
+from vocode.streaming.synthesizer.caching_synthesizer import CachingSynthesizer
 from vocode.streaming.synthesizer.stream_elements_synthesizer import (
     StreamElementsSynthesizer,
 )
@@ -45,9 +46,9 @@ class SynthesizerFactory:
                 synthesizer_config, logger=logger, aiohttp_session=aiohttp_session
             )
         elif isinstance(synthesizer_config, ElevenLabsSynthesizerConfig):
-            return ElevenLabsSynthesizer(
+            return CachingSynthesizer(ElevenLabsSynthesizer(
                 synthesizer_config, logger=logger, aiohttp_session=aiohttp_session
-            )
+            ))
         elif isinstance(synthesizer_config, PlayHtSynthesizerConfig):
             return PlayHtSynthesizer(
                 synthesizer_config, logger=logger, aiohttp_session=aiohttp_session
