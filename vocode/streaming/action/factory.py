@@ -4,7 +4,7 @@ from vocode.streaming.action.nylas_send_email import (
     NylasSendEmailActionConfig,
 )
 from vocode.streaming.models.actions import ActionConfig
-from vocode.streaming.action.transfer_call import TransferCall, TransferCallActionConfig
+from vocode.streaming.action.transfer_call import TransferCall, TransferCallVonage, TransferCallActionConfig, TransferCallVonageActionConfig
 
 
 class ActionFactory:
@@ -13,5 +13,7 @@ class ActionFactory:
             return NylasSendEmail(action_config, should_respond=True)
         elif isinstance(action_config, TransferCallActionConfig):
             return TransferCall(action_config)
+        elif isinstance(action_config, TransferCallVonageActionConfig):
+            return TransferCallVonage(action_config)
         else:
             raise Exception("Invalid action type")
