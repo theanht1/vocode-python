@@ -1,11 +1,16 @@
 import asyncio
 import audioop
+import logging
+import os
 import secrets
 from typing import Any
 import wave
 from string import ascii_letters, digits
 
 from ..models.audio_encoding import AudioEncoding
+
+logger = logging.getLogger(__name__)
+custom_alphabet = ascii_letters + digits + ".-_"
 
 custom_alphabet = ascii_letters + digits + ".-_"
 
@@ -66,3 +71,17 @@ def create_conversation_id() -> str:
 
 def remove_non_letters_digits(text):
     return ''.join(i for i in text if i in custom_alphabet)
+
+def save_as_wav(path, audio_data: bytes, sampling_rate: int):
+    if len(audio_data) == 0:
+        logger.error(f"Cannot save an empty WAV file to {path}")
+        return
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "wb") as f:
+        wav_file = wave.open(f, "wb")
+        wav_file.setnchannels(1)
+        wav_file.setsampwidth(2)
+        wav_file.setframerate(sampling_rate)
+        wav_file.writeframes(audio_data)
+        wav_file.close()
+    logger.debug(f"Saved {len(audio_data)} audio bytes to {path}")

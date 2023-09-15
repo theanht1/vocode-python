@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vocode"
-version = "0.1.111"
+version = "0.1.111a"
 description = "The all-in-one voice SDK"
 authors = ["Ajay Raj <ajay@vocode.dev>"]
 license = "MIT License"
@@ -42,7 +42,7 @@ langchain = "^0.0.198"
 google-cloud-aiplatform = {version = "^1.26.0", optional = true}
 miniaudio = "^1.59"
 boto3 = "^1.28.28"
-baserun = "^0.5.5"
+baserun = "0.5.5"
 
 
 [tool.poetry.group.lint.dependencies]

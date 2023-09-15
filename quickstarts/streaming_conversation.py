@@ -1,7 +1,10 @@
 import asyncio
 import logging
+import os
 import signal
 from dotenv import load_dotenv
+
+from vocode.streaming.synthesizer.caching_synthesizer import CachingSynthesizer
 
 
 load_dotenv()
@@ -17,10 +20,9 @@ from vocode.streaming.models.synthesizer import *
 from vocode.streaming.models.message import BaseMessage
 
 
-logging.basicConfig()
+logging.basicConfig(format='%(relativeCreated)d - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-
 
 async def main():
     (
@@ -34,21 +36,23 @@ async def main():
 
     conversation = StreamingConversation(
         output_device=speaker_output,
-        transcriber=DeepgramTranscriber(
-            DeepgramTranscriberConfig.from_input_device(
-                microphone_input,
-                endpointing_config=PunctuationEndpointingConfig(),
+        transcriber=AzureTranscriber(
+            AzureTranscriberConfig.from_input_device(
+                microphone_input
             )
         ),
         agent=ChatGPTAgent(
             ChatGPTAgentConfig(
                 initial_message=BaseMessage(text="What up"),
                 prompt_preamble="""The AI is having a pleasant conversation about life""",
+                end_conversation_on_goodbye=True,
+                track_bot_sentiment=True,
+                send_filler_audio=True,
             )
         ),
-        synthesizer=AzureSynthesizer(
-            AzureSynthesizerConfig.from_output_device(speaker_output)
-        ),
+        synthesizer=CachingSynthesizer(ElevenLabsSynthesizer(
+            ElevenLabsSynthesizerConfig.from_output_device(speaker_output, api_key=os.getenv("ELEVEN_LABS_API_KEY"), voice_id="8mPcRChfaT5zMYrvP053")
+        )),
         logger=logger,
     )
     await conversation.start()
