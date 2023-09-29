@@ -116,6 +116,13 @@ class VonageCall(Call[VonageOutputDevice]):
                 self.logger.debug("Websocket disconnected")
                 disconnected = True
                 break
+            except KeyError as ex:
+                self.logger.debug(f"Websocket got KeyError: {ex}")
+                continue
+            except Exception as ex:
+                self.logger.debug(f"Websocket disconnected, unexpected exception: {ex}")
+                disconnected = True
+                break
         if not disconnected:
             await ws.close()
         await self.config_manager.delete_config(self.id)
